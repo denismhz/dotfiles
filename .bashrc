@@ -25,7 +25,7 @@ function parse_git_dirty {
 function parse_git_branch {
     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ [\1$(parse_git_dirty)]/"
 }
-export PS1=" $GREEN\W$MAGENTA\$(parse_git_branch) $BLUE\$$CLEAR "
+export PS1="$GREEN\W$MAGENTA\$(parse_git_branch) $BLUE\$$CLEAR "
 #export PS1="[\u@\h $GREEN\w$MAGENTA\$(parse_git_branch) $BLUE\$$CLEAR] "
 
 #export VIRTUALENVWRAPPER_PYTHON=`which python3`
