@@ -25,7 +25,7 @@ function parse_git_dirty {
 function parse_git_branch {
     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ [\1$(parse_git_dirty)]/"
 }
-export PS1="$GREEN\W$MAGENTA\$(parse_git_branch) $BLUE\$$CLEAR "
+export PS1="$GREEN\w$MAGENTA\$(parse_git_branch) $BLUE\$$CLEAR "
 #export PS1="[\u@\h $GREEN\w$MAGENTA\$(parse_git_branch) $BLUE\$$CLEAR] "
 
 #export VIRTUALENVWRAPPER_PYTHON=`which python3`
@@ -46,7 +46,6 @@ export PS1="$GREEN\W$MAGENTA\$(parse_git_branch) $BLUE\$$CLEAR "
 #complete -o default -F _pip_completion pip
 # pip bash completion end
 
-neofetch
 alias yay="paru"
 alias vim="nvim"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/repos/dotfiles --work-tree=$HOME'
