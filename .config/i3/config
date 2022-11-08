@@ -26,8 +26,7 @@ exec --no-startup-id picom &
 #font pango:DejaVu Sans Mono 8
 
 # setup displays
-exec --no-startup-id xrandr --output DP-4 --mode 2560x1600 --rate 165.0 --pos 0x1440; xrandr --output HDMI-0 --mode 1920x1080 --rate 60.0 --scale 1.333333x1.333333;
-#exec --no-startup-id xrandr --output DP-4 --pos 0x1440 --primary --auto --below-of HDMI-0
+exec --no-startup-id xrandr --output DP-0 --off --output DP-1 --off --output DP-2 --mode 1920x1080 --pos 2560x0 --rotate normal --scale 1.333333x1.333333 --rate 60.0 --output DP-3 --off --output HDMI-0 --mode 1920x1080 --pos 0x0 --scale 1.333333x1.333333 --rate 60.0 --rotate normal --output DP-4 --primary --mode 2560x1600 --pos 0x1440 --rotate normal --rate 165.0
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -143,9 +142,9 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws0 "0"
+set $ws0 "0" 
 set $ws1 "1"
-set $ws2 "2"
+set $ws2 "2" 
 set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
@@ -167,6 +166,7 @@ bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 
 # move focused container to workspace
+bindsym $mod+Shift+0 move container to workspace number $ws0
 bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
 bindsym $mod+Shift+3 move container to workspace number $ws3
@@ -176,7 +176,10 @@ bindsym $mod+Shift+6 move container to workspace number $ws6
 bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws0
+
+workspace $ws0 output DP-4
+workspace $ws1 output HDMI-0
+workspace $ws2 output DP-2
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
