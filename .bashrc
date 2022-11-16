@@ -1,50 +1,79 @@
-#
-# ~/.bashrc
-#
+##-----------------------------------------------------
+## synth-shell-prompt.sh
+if [ -f /home/denis/.config/synth-shell/synth-shell-prompt.sh ] && [ -n "$( echo $- | grep i )" ]; then
+	source /home/denis/.config/synth-shell/synth-shell-prompt.sh
+fi
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+##-----------------------------------------------------
+## better-ls
+#if [ -f /home/denis/.config/synth-shell/better-ls.sh ] && [ -n "$( echo $- | grep i )" ]; then
+#	source /home/denis/.config/synth-shell/better-ls.sh
+#fi
 
-alias ls='ls --color=auto'
-alias rmpyc='find . -name "*.pyc" -exec rm -f {} \;'
+##-----------------------------------------------------
+## alias
+if [ -f /home/denis/.config/synth-shell/alias.sh ] && [ -n "$( echo $- | grep i )" ]; then
+	source /home/denis/.config/synth-shell/alias.sh
+fi
 
-# Fancy prompting colors
-GREEN="\[\033[0;32m\]"
-BLUE="\[\033[0;34m\]"
-MAGENTA="\[\033[0;35m\]"
-RED="\[\033[0;31m\]"
-CLEAR="\[\033[0m\]"
+##-----------------------------------------------------
+## better-history
+if [ -f /home/denis/.config/synth-shell/better-history.sh ] && [ -n "$( echo $- | grep i )" ]; then
+	source /home/denis/.config/synth-shell/better-history.sh
+fi
 
-# Fancy prompting with Git stuffs
-function parse_git_dirty {
-    [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]] && echo "*"
+# Aliases
+# ARCHIVE EXTRACTION
+ex ()
+{
+  if [ -f "$1" ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   unzstd $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
 }
 
-function parse_git_branch {
-    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ [\1$(parse_git_dirty)]/"
-}
-export PS1="$GREEN\w$MAGENTA\$(parse_git_branch) $BLUE\$$CLEAR "
-#export PS1="[\u@\h $GREEN\w$MAGENTA\$(parse_git_branch) $BLUE\$$CLEAR] "
-
-#export VIRTUALENVWRAPPER_PYTHON=`which python3`
-#export VIRTUALENVWRAPPER_VIRTUALENV=`which virtualenv`
-#export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages --distribute'
-#export WORKON_HOME=$HOME/src
-#export PIP_VIRTUALENV_BASE=$WORKON_HOME
-#export PIP_RESPECT_VIRTUALENV=true
-#source `which virtualenvwrapper.sh`
-
-# pip bash completion start
-#_pip_completion()
-#{
-#    COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
-#                   COMP_CWORD=$COMP_CWORD \
-#                   PIP_AUTO_COMPLETE=1 $1 ) )
-#}
-#complete -o default -F _pip_completion pip
-# pip bash completion end
-
-alias yay="paru"
+# vim
 alias vim="nvim"
+
+# cd
+alias ..='cd ..'
+alias ...='cd ../..'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+
+# ls to exa
+alias ls='exa -al --color=always --group-directories-first' # my preferred listing
+alias la='exa -a --color=always --group-directories-first'  # all files and dirs
+alias ll='exa -l --color=always --group-directories-first'  # long format
+alias lt='exa -aT --color=always --group-directories-first' # tree listing
+alias l.='exa -a | egrep "^\."'
+
+# pacman and yay/paru
+alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphaned packages
+alias yay="paru"
+
+# confirm before overwriting something
+alias cp="cp -i"
+alias mv='mv -i'
+alias rm='rm -i'
+
 alias dotfiles='/usr/bin/git --git-dir=$HOME/repos/dotfiles --work-tree=$HOME'
 export EDITOR=`which nvim`
