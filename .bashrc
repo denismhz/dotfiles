@@ -75,5 +75,30 @@ alias cp="cp -i"
 alias mv='mv -i'
 alias rm='rm -i'
 
+# enable/disable battery saving mode
+batterysave()
+{
+  if [ "$1" ] ; then
+    case $1 in 
+      "enable") 
+        sudo bash -c "echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode;"
+        echo -e "\nBatterysaving mode enabled!";;
+      "disable") 
+        sudo bash -c "echo 0 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode;"
+        echo -e "\nBatterysaving mode disabled!";;
+      "status")
+        if [ $(awk -b '{print}' '/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode') -eq 1 ]; then
+          echo -e "\nBatterysaving mode enabled!"
+        else
+          echo -e "\nBatterysaving mode disabled!"
+        fi;;
+    esac
+  else
+    echo "No valid argument! (enable, disable, status)"
+  fi
+}
+
+# random aliases
 alias dotfiles='/usr/bin/git --git-dir=$HOME/repos/dotfiles --work-tree=$HOME'
+
 export EDITOR=`which nvim`
